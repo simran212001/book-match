@@ -1,0 +1,13 @@
+export enum ModelType {
+  STUDENT = 'students',
+}
+
+export enum ResponseCode {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  SERVER_ERROR = 'SERVER_ERROR',
+  INPUT_ERROR = 'INPUT_ERROR',
+  FORBIDDEN = 'FORBIDDEN',
+  DATABASE_ERROR = 'DATABASE_ERROR',
+  VALIDATION_ERROR = 'VALIDATION_ERROR',
+}
