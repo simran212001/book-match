@@ -1,0 +1,365 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'BookMatch API'
+  description: |
+    BookMatch API based on the OpenAPI 3.0 specification.
+
+    Useful links:
+    - [BookMatch API Repository](https://github.com/evanigwilo/book-match)
+    - [The API Definition](https://github.com/evanigwilo/book-match/blob/main/backend/docs/api-definition.yml)
+tags:
+  - name: Student
+    description: Access to student related endpoints
+
+paths:
+  # Student
+  /student:
+    post:
+      tags:
+        - Student
+      summary: Creates or gets a student with a random question
+      security: [] # no authentication
+      operationId: createStudent
+      requestBody:
+        required: true
+        description: Name of the student
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: 'John'
+      responses:
+        '200':
+          description: Returns student with the specified name
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Student'
+                example:
+                  code: SUCCESS
+                  message: Student found successfully
+                  student:
+                    name: John
+                    questions:
+                      - question: 'What type of learning environment do you find most effective?'
+                        options:
+                          - text: 'Engaging in hands-on and practical activities.'
+                            personality:
+                              creative: 8
+                              independent: 5
+                              confident: 6
+                              intelligent: 7
+                              judgment: 4
+                          - text: 'Exploring concepts independently through self-study.'
+                            personality:
+                              creative: 4
+                              independent: 9
+                              confident: 5
+                              intelligent: 8
+                              judgment: 7
+                          - text: 'Participating in group discussions and collaborative projects.'
+                            personality:
+                              creative: 3
+                              independent: 4
+                              confident: 6
+                              intelligent: 5
+                              judgment: 7
+                        _id: '65735f975dd32a9c76ed2e76'
+                      - question: 'In a group project, what role do you naturally take on?'
+                        options:
+                          - text: 'Brainstorming and generating creative ideas.'
+                            personality:
+                              creative: 9
+                              independent: 5
+                              confident: 7
+                              intelligent: 8
+                              judgment: 6
+                          - text: 'Working independently on a specific task.'
+                            personality:
+                              creative: 4
+                              independent: 8
+                              confident: 5
+                              intelligent: 6
+                              judgment: 3
+                          - text: 'Leading and coordinating the team.'
+                            personality:
+                              creative: 6
+                              independent: 4
+                              confident: 9
+                              intelligent: 7
+                              judgment: 8
+                        _id: '65735f975dd32a9c76ed2e77'
+                    answers: []
+                    _id: '65735f975dd32a9c76ed2e75'
+                    createdDate: '2023-12-08T18:25:27.260Z'
+                    updatedDate: '2023-12-08T18:25:27.260Z'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    put:
+      tags:
+        - Student
+      summary: Updates a student answers
+      security: [] # no authentication
+      operationId: updateAnswers
+      requestBody:
+        required: true
+        description: Name of the student
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - answers
+              properties:
+                name:
+                  type: string
+                  example: 'John'
+                answers:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: number
+                  example: [[0, 2], [1]]
+
+      responses:
+        '200':
+          description: Returns student answers, recommended books and vectors
+          content:
+            application/json:
+              schema:
+                example:
+                  code: SUCCESS
+                  message: Answers updated successfully
+                  student:
+                    name: John
+                    questions:
+                      - question: 'What type of learning environment do you find most effective?'
+                        options:
+                          - text: 'Engaging in hands-on and practical activities.'
+                            personality:
+                              creative: 8
+                              independent: 5
+                              confident: 6
+                              intelligent: 7
+                              judgment: 4
+                          - text: 'Exploring concepts independently through self-study.'
+                            personality:
+                              creative: 4
+                              independent: 9
+                              confident: 5
+                              intelligent: 8
+                              judgment: 7
+                          - text: 'Participating in group discussions and collaborative projects.'
+                            personality:
+                              creative: 3
+                              independent: 4
+                              confident: 6
+                              intelligent: 5
+                              judgment: 7
+                        _id: '65735f975dd32a9c76ed2e76'
+                      - question: 'In a group project, what role do you naturally take on?'
+                        options:
+                          - text: 'Brainstorming and generating creative ideas.'
+                            personality:
+                              creative: 9
+                              independent: 5
+                              confident: 7
+                              intelligent: 8
+                              judgment: 6
+                          - text: 'Working independently on a specific task.'
+                            personality:
+                              creative: 4
+                              independent: 8
+                              confident: 5
+                              intelligent: 6
+                              judgment: 3
+                          - text: 'Leading and coordinating the team.'
+                            personality:
+                              creative: 6
+                              independent: 4
+                              confident: 9
+                              intelligent: 7
+                              judgment: 8
+                        _id: '65735f975dd32a9c76ed2e77'
+                    answers: [[0, 2], [1]]
+                    _id: '65735f975dd32a9c76ed2e75'
+                    createdDate: '2023-12-08T18:25:27.260Z'
+                    updatedDate: '2023-12-08T18:25:27.260Z'
+                  result:
+                    books:
+                      - author: 'Geoffrey Parker (ed.)'
+                        description: 'The new edition of The Cambridge Illustrated History of Warfare offers an updated comprehensive account of Western warfare.'
+                        image: 'https://image.ebooks.com/cover/210319096.jpg?width=97&height=150&quality=85'
+                        link: 'https://www.ebooks.com/en-gh/book/210319096/the-cambridge-illustrated-history-of-warfare/geoffrey-parker/'
+                        title: 'The Cambridge Illustrated History of Warfare (2nd ed.)'
+                        genre: 'history'
+                      - author: 'Jeremy Adelman, and more...Elizabeth Pollard and more...'
+                        description: 'A compelling global storytelling approach to world history'
+                        image: 'https://image.ebooks.com/cover/210188518.jpg?width=97&height=150&quality=85'
+                        link: 'https://www.ebooks.com/en-gh/book/210188518/worlds-together-worlds-apart/jeremy-adelman/'
+                        title: 'Worlds Together, Worlds Apart (3rd ed.)'
+                        genre: 'history'
+                      - author: 'Eric Foner'
+                        description: 'The most successful U.S. History textbook, now built for the AP® course'
+                        image: 'https://image.ebooks.com/cover/210006335.jpg?width=97&height=150&quality=85'
+                        link: 'https://www.ebooks.com/en-gh/book/210006335/give-me-liberty/eric-foner/'
+                        title: 'Give Me Liberty! (6th ed.)'
+                        genre: 'history'
+                    studentVector: [6, 6, 5, 6, 3]
+                    bookVector: [7, 5, 6, 8, 4]
+                    personalities: ['creative', 'independent', 'confident', 'intelligent', 'judgment']
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Result code
+          example: SUCCESS
+        message:
+          type: string
+          description: Result message
+          example: Student found successfully
+        student:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the student
+              example: John
+            questions:
+              type: array
+              description: List of questions
+              items:
+                type: object
+                properties:
+                  question:
+                    type: string
+                    description: The question text
+                  options:
+                    type: array
+                    description: List of options for the question
+                    items:
+                      type: object
+                      properties:
+                        text:
+                          type: string
+                          description: The text of the option
+                        personality:
+                          type: object
+                          description: Personality traits associated with the option
+                          properties:
+                            creative:
+                              type: integer
+                              description: Creative trait value
+                            independent:
+                              type: integer
+                              description: Independent trait value
+                            confident:
+                              type: integer
+                              description: Confident trait value
+                            intelligent:
+                              type: integer
+                              description: Intelligent trait value
+                            judgment:
+                              type: integer
+                              description: Judgment trait value
+                  _id:
+                    type: string
+                    description: The ID of the question
+              example:
+                - question: 'What type of learning environment do you find most effective?'
+                  options:
+                    - text: 'Engaging in hands-on and practical activities.'
+                      personality:
+                        creative: 8
+                        independent: 5
+                        confident: 6
+                        intelligent: 7
+                        judgment: 4
+                    - text: 'Exploring concepts independently through self-study.'
+                      personality:
+                        creative: 4
+                        independent: 9
+                        confident: 5
+                        intelligent: 8
+                        judgment: 7
+                    - text: 'Participating in group discussions and collaborative projects.'
+                      personality:
+                        creative: 3
+                        independent: 4
+                        confident: 6
+                        intelligent: 5
+                        judgment: 7
+                  _id: '65735f975dd32a9c76ed2e76'
+                - question: 'In a group project, what role do you naturally take on?'
+                  options:
+                    - text: 'Brainstorming and generating creative ideas.'
+                      personality:
+                        creative: 9
+                        independent: 5
+                        confident: 7
+                        intelligent: 8
+                        judgment: 6
+                    - text: 'Working independently on a specific task.'
+                      personality:
+                        creative: 4
+                        independent: 8
+                        confident: 5
+                        intelligent: 6
+                        judgment: 3
+                    - text: 'Leading and coordinating the team.'
+                      personality:
+                        creative: 6
+                        independent: 4
+                        confident: 9
+                        intelligent: 7
+                        judgment: 8
+                  _id: '65735f975dd32a9c76ed2e77'
+            answers:
+              type: array
+              description: List of answers
+              items:
+                type: array
+                items:
+                  type: number
+            _id:
+              type: string
+              description: The ID of the student
+            createdDate:
+              type: string
+              format: date-time
+              description: Date and time of creation
+            updatedDate:
+              type: string
+              format: date-time
+              description: Date and time of last update
+
+  responses:
+    ServerError:
+      description: 'Internal Server Error'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: SERVER_ERROR
+              message:
+                type: string
+                example: Internal Server Error
